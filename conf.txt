@@ -1,0 +1,7 @@
+<?php
+
+// rename or copy this file to conf.php 
+$host = "";
+$user = "";
+$pass = "";
+$db_name = "";
