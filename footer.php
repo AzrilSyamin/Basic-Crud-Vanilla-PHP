@@ -25,6 +25,32 @@
       $("#select_all").prop("checked", false)
     }
   })
+
+  let mylink = window.location.pathname
+  let path = mylink.split("/")
+  const fileUrl = window.location.protocol + "//" + window.location.host + "/" + path[1] + "/"
+
+  if (window.location.href == fileUrl + "index.php") {
+    document.querySelector("thead tr th:last-child").classList.add("visually-hidden")
+    let mat = document.querySelectorAll("tbody tr td:last-child")
+    for (i = 0; i < mat.length; i++) {
+      mat[i].classList.add("visually-hidden")
+    }
+  }
+
+  let title = document.querySelectorAll(".nav-link")
+  let mytitle = path[2].split(".")
+  if (mytitle[0] == "index") {
+    title[0].classList.add("active")
+  } else {
+    for (i = 0; i < title.length; i++) {
+      if (mytitle[0].charAt(0).toUpperCase() + mytitle[0].slice(1) == title[i].innerHTML) {
+        title[i].classList.add("active")
+      } else {
+        title[i].classList.remove("active")
+      }
+    }
+  }
 </script>
 </body>
 

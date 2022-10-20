@@ -81,3 +81,24 @@ function delete_products()
     return mysqli_affected_rows($conn);
   }
 }
+
+function header_search()
+{
+  global $conn;
+  $keyword = $_POST["header_search_input"];
+  $table = $_POST["header_search_select"];
+  // var_dump($table);
+  // die;
+  if ($table !== "") {
+    $query = "SELECT * FROM products WHERE
+          $table LIKE '%$keyword%'
+          ";
+  } else {
+    $query = "SELECT * FROM products WHERE
+          product_name LIKE '%$keyword%' OR
+          product_quantity LIKE '%$keyword%' OR
+          product_sell LIKE '%$keyword%'
+          ";
+  }
+  return mysqli_query($conn, $query);
+}

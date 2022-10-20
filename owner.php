@@ -3,7 +3,12 @@ include_once("header.php");
 $query = "select * from products";
 $products = mysqli_query($conn, $query);
 
-if (isset($_POST["cash"])) {
+if (isset($_POST["header_search_button"])) {
+  $products = header_search();
+  if (mysqli_num_rows($products) < 1) {
+    $noData = true;
+  }
+} elseif (isset($_POST["cash"])) {
   if (cash() > 0) {
     echo "<script>window.location.href='owner.php?cash'</script>";
   }
@@ -27,7 +32,7 @@ if (isset($_POST["cash"])) {
 <div class="row">
   <?php if (isset($_POST["generate_form_add_products"])) : $total = $_POST["total_comfirm"]; ?>
     <!-- add  -->
-    <div class="col-md-3 mt-3 pt-0">
+    <div class="col-lg-3 mt-3 pt-0">
       <div class="p-3 bg-dark text-white">
         <form method="POST">
           <h4>Tambah Barang</h4>
@@ -47,7 +52,7 @@ if (isset($_POST["cash"])) {
     <!-- end add  -->
   <?php elseif (isset($_POST["checked"])) : $totals = $_POST; ?>
     <!-- edit  -->
-    <div class="col-md-3 mt-3 pt-0">
+    <div class="col-lg-3 mt-3 pt-0">
       <div class="p-3 bg-dark text-white">
         <form method="POST">
           <h4>Edit Barang</h4>
@@ -83,14 +88,14 @@ if (isset($_POST["cash"])) {
 
   <?php else : ?>
     <!-- casher -->
-    <div class="col-md-3 mt-3 pt-0">
+    <div class="col-lg-3 mt-3 pt-0">
       <div class="p-3 bg-dark text-white">
         <form method="POST">
           <h4>Kaunter Pembayaran</h4>
           <div class="mb-3">
             <label for="buy_product_name" class="form-label">Barang</label>
             <select class="form-select" id="buy_product_name" name="buy_product_name" required>
-              <option selected>-- Pilih Barang --</option>
+              <option value="" selected>-- Pilih Barang --</option>
               <?php foreach ($products as $product) : ?>
                 <option value="<?= $product["product_id"]; ?>"><?= $product["product_name"]; ?></option>
               <?php endforeach; ?>
@@ -109,46 +114,14 @@ if (isset($_POST["cash"])) {
     <!-- end casher  -->
   <?php endif; ?>
   <!-- table -->
-  <div class="col-md-9 mt-3">
+  <div class="col-lg-9 mt-3">
     <div class="p-3 bg-dark text-white">
       <div class="col-lg-12 d-flex justify-content-between">
         <h4 class="">Status Terkini</h4>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><b>+</b></button>
       </div>
       <form method="POST">
-        <div class="table-responsive">
-          <table class="table table-dark table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nama Barang</th>
-                <th scope="col">Quantiti</th>
-                <th scope="col">Total Jualan</th>
-                <th scope="col">
-                  <input type="checkbox" class="form-check-input" id="select_all" value="">
-                </th>
-              </tr>
-            </thead>
-            <tbody class="table-group-divider">
-              <?php
-              $i = 1;
-              foreach ($products as $product) : ?>
-
-                <tr>
-                  <th scope="row"><?= $i++; ?></th>
-                  <td><?= $product["product_name"]; ?></td>
-                  <td>
-                    <span class="badge bg-danger"><?= ($product["product_quantity"] !== null) ? $product["product_quantity"] . " Unit" : "0 Unit" ?></span>
-                  </td>
-                  <td><span class="badge bg-success"><?= ($product["product_sell"] !== null) ? $product["product_sell"] . " Unit</span>" : "Belum Terjual" ?></td>
-                  <td>
-                    <input class="form-check-input check" type="checkbox" name="checked[]" value="<?= $product["product_id"]; ?>">
-                  </td>
-                </tr>
-              <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
+        <?php include_once("table.php") ?>
         <div class=" d-flex justify-content-end  pt-3">
           <button type="submit" class="btn btn-warning" name="edit">Edit</button>
           <button type="submit" class="btn btn-danger ms-2" name="del" onclick="return confirm('Padam? Anda pasti?')">Padam</button>
@@ -166,7 +139,13 @@ if (isset($_POST["cash"])) {
 
 <?php include_once("footer.php"); ?>
 <script>
-  if (window.location.href === "http://localhost/basic-crud-Vanilla-PHP/owner.php") {
+  for (let i = 0; i < path.length; i++) {
+    if (path[i] == "owner.php") {
+      owner = path[i]
+    }
+  }
+
+  if (window.location.href == fileUrl + owner) {
     alert("Opps... Anda Admin? Halaman ini hanya boleh dibuka oleh Pengurus")
     let pass = prompt(`Halaman ini memerlukan password! Sila masukkan password anda dibawah! 'NOTE: Password = 1234'`)
     if (pass !== "1234") {
@@ -177,8 +156,6 @@ if (isset($_POST["cash"])) {
       window.location.href = param
     }
   }
-
-  $()
 </script>
 
 <!-- Modal -->

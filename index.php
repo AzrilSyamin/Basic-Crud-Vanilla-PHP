@@ -3,6 +3,13 @@ include_once("header.php");
 $query = "select * from products";
 $products = mysqli_query($conn, $query);
 
+if (isset($_POST["header_search_button"])) {
+  $products = header_search();
+  if (mysqli_num_rows($products) < 1) {
+    $noData = true;
+  }
+}
+
 if (isset($_POST["cash"])) {
   if (cash() > 0) {
     echo "<script>window.location.href='index.php'</script>";
@@ -14,7 +21,7 @@ if (isset($_POST["cash"])) {
 <!-- tools -->
 <div class="row">
   <!-- casher -->
-  <div class="col-md-4 mt-3 pt-0">
+  <div class="col-lg-3 mt-3 pt-0">
     <div class="p-3 bg-dark text-white">
       <form method="POST">
         <h4>Kaunter Pembayaran</h4>
@@ -39,37 +46,10 @@ if (isset($_POST["cash"])) {
   </div>
   <!-- end casher  -->
   <!-- table -->
-  <div class="col-md-8 mt-3">
+  <div class="col-lg-9 mt-3">
     <div class="p-3 bg-dark text-white">
       <h4 class="">Status Terkini</h4>
-      <form method="POST">
-        <div class="table-responsive">
-          <table class="table table-dark table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nama Barang</th>
-                <th scope="col">Quantiti</th>
-                <th scope="col">Total Jualan</th>
-              </tr>
-            </thead>
-            <tbody class="table-group-divider">
-              <?php
-              $i = 1;
-              foreach ($products as $product) : ?>
-                <tr>
-                  <th scope="row"><?= $i++; ?></th>
-                  <td><?= $product["product_name"]; ?></td>
-                  <td>
-                    <span class="badge bg-danger"><?= ($product["product_quantity"] !== null) ? $product["product_quantity"] . " Unit" : "0 Unit" ?></span>
-                  </td>
-                  <td><span class="badge bg-success"><?= ($product["product_sell"] !== null) ? $product["product_sell"] . " Unit</span>" : "Belum Terjual" ?></td>
-                </tr>
-              <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
-      </form>
+      <?php include_once("table.php") ?>
     </div>
   </div>
   <!-- end table  -->

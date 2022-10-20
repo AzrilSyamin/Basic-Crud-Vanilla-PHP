@@ -1,4 +1,6 @@
-<?php require_once("function.php"); ?>
+<?php require_once("function.php");
+
+?>
 
 <!doctype html>
 <html lang="en">
@@ -21,22 +23,22 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+              <a class="nav-link" aria-current="page" href="index.php">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="owner.php">Owner</a>
+              <a class="nav-link" aria-current="page" href="owner.php">Owner</a>
             </li>
           </ul>
-          <form class="d-flex" role="search">
+          <form method="POST" class="d-flex" role="search">
             <div class="input-group mb-3">
-              <input class="form-control" type="search" placeholder="Cari">
-              <select class="form-select" id="inputGroupSelect01">
-                <option selected>Pilih...</option>
-                <option value="1">Nama Barang</option>
-                <option value="2">Quantiti</option>
-                <option value="3">Jualan</option>
+              <select class="form-select" name="header_search_select">
+                <option value="" selected>All</option>
+                <option value="product_name">Nama Barang</option>
+                <option value="product_quantity">Quantiti</option>
+                <option value="product_sell">Jualan</option>
               </select>
-              <button class="btn btn-success" type="submit">Cari</button>
+              <input class="form-control" type="search" placeholder="Cari" name="header_search_input" required>
+              <button class="btn btn-success" type="submit" name="header_search_button">Cari</button>
             </div>
           </form>
         </div>
