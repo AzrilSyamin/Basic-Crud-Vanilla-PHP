@@ -40,7 +40,7 @@
 
   let title = document.querySelectorAll(".nav-link")
   let mytitle = path[2].split(".")
-  if (mytitle[0] == "index") {
+  if (mytitle[0] == "index" || mytitle[0] == "") {
     title[0].classList.add("active")
   } else {
     for (i = 0; i < title.length; i++) {

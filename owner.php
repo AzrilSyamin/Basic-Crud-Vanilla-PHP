@@ -37,10 +37,19 @@ if (isset($_POST["header_search_button"])) {
         <form method="POST">
           <h4>Tambah Barang</h4>
           <?php for ($i = 1; $i <= $total; $i++) : ?>
-            <div class="mb-3">
-              <input type="hidden" name="total" value="<?= $total; ?>">
-              <label for="product_name" class="form-label">Nama Barang <?= $i; ?></label>
-              <input type="text" class="form-control" id="product_name" name="product_name_<?= $i; ?>" required>
+            <div class="mb-3 p-3 bg-dark-black">
+              <div class="mb-3">
+                <div class="mb-3">
+                  <input type="hidden" name="total" value="<?= $total; ?>">
+                  <label for="product_name" class="form-label">Nama Barang <?= $i; ?></label>
+                  <input type="text" class="form-control" id="product_name" name="product_name_<?= $i; ?>" placeholder="Kasut Adidas" required>
+                </div>
+                <div class="mb-3">
+                  <label for="product_price" class="form-label">Harga Barang <?= $i; ?></label>
+                  <input type="text" class="form-control" id="product_price" name="product_price_<?= $i; ?>" placeholder="20" required>
+                  <span class="form-text text-info">* masukkan angka sahaja contoh untuk RM20, masukkan 20</span>
+                </div>
+              </div>
             </div>
           <?php endfor; ?>
           <div class="mb-3 d-grid">
@@ -146,10 +155,10 @@ if (isset($_POST["header_search_button"])) {
   }
 
   if (window.location.href == fileUrl + owner) {
-    alert("Opps... Anda Admin? Halaman ini hanya boleh dibuka oleh Pengurus")
-    let pass = prompt(`Halaman ini memerlukan password! Sila masukkan password anda dibawah! 'NOTE: Password = 1234'`)
-    if (pass !== "1234") {
-      alert("Maaf tidak dibenarkan disini")
+    alert("Opps... Anda Owner? Halaman ini hanya boleh dibuka oleh Owner")
+    let pass = prompt("Halaman ini memerlukan password! Sila masukkan password anda dibawah!")
+    if (pass !== "Owner") {
+      alert("Maaf anda tidak dibenarkan disini")
       window.location.href = "index.php"
     } else {
       const param = "?admin"

@@ -42,6 +42,9 @@ $theme-colors: map-merge($theme-colors, $dark-blue);
 @import "../node_modules/bootstrap/scss/utilities/api";
 
 // 8. Add additional custom code here
+$navbar-dark-active-color:$info;
+$navbar-dark-brand-color:$white;
+
 
 // Include all of Bootstrap
 @import "../node_modules/bootstrap/scss/bootstrap";

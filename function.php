@@ -4,8 +4,35 @@ if (!file_exists("conf.php")) {
 } else {
   include_once("conf.php");
 }
-$conn = mysqli_connect($host, $user, $pass, $db_name);
+$conn = mysqli_connect($host, $user, $pass);
+if (!$conn) {
+  echo "gagal connect" . mysqli_connect_error();
+}
 
+$create_db = "CREATE DATABASE IF NOT EXISTS $db_name";
+if (!mysqli_query($conn, $create_db) === true) {
+  echo "Gagal buat database: " . mysqli_error($conn);
+} else {
+  $conn = mysqli_connect($host, $user, $pass, $db_name);
+  create_tabel();
+}
+
+// create table 
+function create_tabel()
+{
+  global $conn;
+  $sql = "CREATE TABLE IF NOT EXISTS products (
+  product_id int NOT NULL AUTO_INCREMENT,
+  product_name varchar(45) DEFAULT NULL,
+  product_quantity varchar(45) DEFAULT NULL,
+  product_sell varchar(45) DEFAULT NULL,
+  product_price varchar(100) DEFAULT NULL,
+  product_sales varchar(100) DEFAULT NULL,
+  PRIMARY KEY (product_id)
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;";
+  return mysqli_query($conn, $sql);
+}
+// end create table 
 
 function cash()
 {
@@ -16,10 +43,11 @@ function cash()
     return false;
   }
 
-  $get = mysqli_query($conn, "SELECT product_quantity,product_sell,product_name FROM products WHERE product_id=$id");
+  $get = mysqli_query($conn, "SELECT product_name,product_price,product_quantity,product_sell FROM products WHERE product_id=$id");
   $result = mysqli_fetch_assoc($get);
   $product_name = $result["product_name"];
   $quantity = $result["product_quantity"];
+  $price = $result["product_price"];
   if ($_POST["buy-quantity"] > $result["product_quantity"]) {
     echo "<script>alert('Jumlah barang yang anda inginkan tidak mencukupi, stock terkini $product_name adalah $quantity')</script>";
     return false;
@@ -27,10 +55,12 @@ function cash()
     $quantity = $result["product_quantity"] - $_POST["buy-quantity"];
   }
   $tambah = $_POST["buy-quantity"] + $result["product_sell"];
+  $sales = $price * $tambah;
 
   $query = "UPDATE products SET
   product_quantity='$quantity',
-  product_sell='$tambah'
+  product_sell='$tambah',
+  product_sales = '$sales'
   WHERE product_id=$id";
   mysqli_query($conn, $query) or die(mysqli_error($conn));
 
@@ -43,8 +73,9 @@ function add_products()
   $total = $_POST["total"];
   for ($products = 1; $products <= $total; $products++) {
     $product_name = $_POST["product_name_" . $products];
+    $product_price = $_POST["product_price_" . $products];
 
-    mysqli_query($conn, "INSERT INTO products (product_name) VALUE ('$product_name')") or die(mysqli_error($conn));
+    mysqli_query($conn, "INSERT INTO products (product_name,product_price) VALUE ('$product_name','$product_price')") or die(mysqli_error($conn));
   }
   return mysqli_affected_rows($conn);
 }
