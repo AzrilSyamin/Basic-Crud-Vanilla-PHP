@@ -48,13 +48,13 @@ function cash()
   $product_name = $result["product_name"];
   $quantity = $result["product_quantity"];
   $price = $result["product_price"];
-  if ($_POST["buy-quantity"] > $result["product_quantity"]) {
+  if (htmlspecialchars($_POST["buy-quantity"]) > $result["product_quantity"]) {
     echo "<script>alert('Jumlah barang yang anda inginkan tidak mencukupi, stock terkini $product_name adalah $quantity')</script>";
     return false;
   } else {
-    $quantity = $result["product_quantity"] - $_POST["buy-quantity"];
+    $quantity = $result["product_quantity"] - htmlspecialchars($_POST["buy-quantity"]);
   }
-  $tambah = $_POST["buy-quantity"] + $result["product_sell"];
+  $tambah = htmlspecialchars($_POST["buy-quantity"]) + $result["product_sell"];
   $sales = $price * $tambah;
 
   $query = "UPDATE products SET
@@ -72,8 +72,8 @@ function add_products()
   global $conn;
   $total = $_POST["total"];
   for ($products = 1; $products <= $total; $products++) {
-    $product_name = $_POST["product_name_" . $products];
-    $product_price = $_POST["product_price_" . $products];
+    $product_name = htmlspecialchars($_POST["product_name_" . $products]);
+    $product_price = htmlspecialchars($_POST["product_price_" . $products]);
 
     mysqli_query($conn, "INSERT INTO products (product_name,product_price) VALUE ('$product_name','$product_price')") or die(mysqli_error($conn));
   }
@@ -84,10 +84,10 @@ function edit_products()
 {
   global $conn;
   for ($i = 0; $i <= $_POST["edit_total"]; $i++) {
-    $product_name = $_POST["product_name_" . $i];
-    $quantity = $_POST["quantity_" . $i];
-    $quantity = $_POST["quantity_" . $i];
-    $id = $_POST["id_product_" . $i];
+    $product_name = htmlspecialchars($_POST["product_name_" . $i]);
+    $quantity = htmlspecialchars($_POST["quantity_" . $i]);
+    $quantity = htmlspecialchars($_POST["quantity_" . $i]);
+    $id = htmlspecialchars($_POST["id_product_" . $i]);
 
     $query = "UPDATE products SET
     product_name='$product_name',
@@ -116,10 +116,8 @@ function delete_products()
 function header_search()
 {
   global $conn;
-  $keyword = $_POST["header_search_input"];
-  $table = $_POST["header_search_select"];
-  // var_dump($table);
-  // die;
+  $keyword = htmlspecialchars($_POST["header_search_input"]);
+  $table = htmlspecialchars($_POST["header_search_select"]);
   if ($table !== "") {
     $query = "SELECT * FROM products WHERE
           $table LIKE '%$keyword%'
