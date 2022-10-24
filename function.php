@@ -48,19 +48,35 @@ function cash()
   $product_name = $result["product_name"];
   $quantity = $result["product_quantity"];
   $price = $result["product_price"];
-  if (htmlspecialchars($_POST["buy-quantity"]) > $result["product_quantity"]) {
-    echo "<script>alert('Jumlah barang yang anda inginkan tidak mencukupi, stock terkini $product_name adalah $quantity')</script>";
+  $buyQuantity = htmlspecialchars($_POST["buy-quantity"]);
+  if ($buyQuantity > $quantity) {
+
+    switch ($quantity) {
+      case NULL:
+        $quantity = "Belum Ada!";
+        $message = "Maaf stock $product_name $quantity";
+        break;
+      case 0:
+        $quantity = "sudah Habis Dijual!";
+        $message = "Maaf $product_name $quantity";
+        break;
+      default:
+        $quantity = "adalah $quantity";
+        $message = "Jumlah barang yang anda inginkan tidak mencukupi, stock $product_name $quantity";
+    }
+
+    echo "<script>alert('$message')</script>";
     return false;
   } else {
-    $quantity = $result["product_quantity"] - htmlspecialchars($_POST["buy-quantity"]);
+    $quantity = $result["product_quantity"] - $buyQuantity;
   }
-  $tambah = htmlspecialchars($_POST["buy-quantity"]) + $result["product_sell"];
-  $sales = $price * $tambah;
+  $buyQuantity += $result["product_sell"];
+  $price *= $buyQuantity;
 
   $query = "UPDATE products SET
   product_quantity='$quantity',
-  product_sell='$tambah',
-  product_sales = '$sales'
+  product_sell='$buyQuantity',
+  product_sales = '$price'
   WHERE product_id=$id";
   mysqli_query($conn, $query) or die(mysqli_error($conn));
 

@@ -21,6 +21,13 @@ if (isset($_POST["header_search_button"])) {
     echo "<script>window.location.href='owner.php?edit'</script>";
   }
 } else if (isset($_POST["del"])) {
+  if (!isset($_POST["checked"])) {
+    echo "<script>alert('Sila pilih barang terlebih dahulu')
+    window.location.href='?error'
+    </script>";
+    return false;
+  }
+  echo "<script>alert('Padam? Anda pasti?')</script>";
   if (delete_products() > 0) {
     echo "<script>window.location.href='owner.php?del'</script>";
   }
@@ -30,7 +37,14 @@ if (isset($_POST["header_search_button"])) {
 
 <!-- tools -->
 <div class="row">
-  <?php if (isset($_POST["generate_form_add_products"])) : $total = $_POST["total_comfirm"]; ?>
+  <?php if (isset($_POST["generate_form_add_products"])) : if ($_POST["total_comfirm"] > 10) {
+      echo "<script>
+      alert('Maaf anda tidak boleh tambah lebih 10 produk!')
+      window.location.href='?error'
+      </script>";
+      return false;
+    }
+    $total = $_POST["total_comfirm"]; ?>
     <!-- add  -->
     <div class="col-lg-3 mt-3 pt-0">
       <div class="p-3 bg-dark text-white">
@@ -59,7 +73,15 @@ if (isset($_POST["header_search_button"])) {
       </div>
     </div>
     <!-- end add  -->
-  <?php elseif (isset($_POST["checked"])) : $totals = $_POST; ?>
+  <?php elseif (isset($_POST["edit"])) : if (!isset($_POST["checked"])) {
+      if (!isset($_POST["checked"])) {
+        echo "<script>alert('Sila pilih barang terlebih dahulu')
+      window.location.href='?error'
+      </script>";
+        return false;
+      }
+    }
+    $totals = $_POST; ?>
     <!-- edit  -->
     <div class="col-lg-3 mt-3 pt-0">
       <div class="p-3 bg-dark text-white">
@@ -123,17 +145,17 @@ if (isset($_POST["header_search_button"])) {
     <!-- end casher  -->
   <?php endif; ?>
   <!-- table -->
-  <div class="col-lg-9 mt-3">
+  <div class="col-lg-9 my-3">
     <div class="p-3 bg-dark text-white">
       <div class="col-lg-12 d-flex justify-content-between">
         <h4 class="">Status Terkini</h4>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><b>+</b></button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateFormAddProduct"><b>+</b></button>
       </div>
       <form method="POST">
         <?php include_once("table.php") ?>
         <div class=" d-flex justify-content-end  pt-3">
           <button type="submit" class="btn btn-warning" name="edit">Edit</button>
-          <button type="submit" class="btn btn-danger ms-2" name="del" onclick="return confirm('Padam? Anda pasti?')">Padam</button>
+          <button type="submit" class="btn btn-danger ms-2" name="del">Padam</button>
         </div>
       </form>
     </div>
@@ -145,6 +167,31 @@ if (isset($_POST["header_search_button"])) {
 </div>
 
 
+<!-- Modal -->
+<div class="modal fade" id="generateFormAddProduct" tabindex="-1" aria-labelledby="generateFormAddProductLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form action="" method="POST" class="modal-content bg-dark-black text-white">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="generateFormAddProductLabel">Tambah Barang</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-12">
+          <div class="mb-3">
+            <label for="total_comfirm" class="form-label">Jumlah Barang</label>
+            <input type="number" class="form-control" id="total_comfirm" name="total_comfirm" placeholder="10" max="10" required>
+            <div id="total_comfirm" class="form-text text-info">*Masukkan jumlah barang yang ingin anda tambah, max 10 data saja</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="submit" class="btn btn-primary" name="generate_form_add_products">Teruskan</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- end modal  -->
 
 <?php include_once("footer.php"); ?>
 <script>
@@ -166,29 +213,3 @@ if (isset($_POST["header_search_button"])) {
     }
   }
 </script>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <form action="" method="POST" class="modal-content bg-dark-black text-white">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Barang</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="col-12">
-          <div class="mb-3">
-            <label for="total_comfirm" class="form-label">Jumlah Barang</label>
-            <input type="number" class="form-control" id="total_comfirm" name="total_comfirm" placeholder="10" required>
-            <div id="total_comfirm" class="form-text text-info">*Masukkan jumlah barang yang ingin anda tambah</div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <button type="submit" class="btn btn-primary" name="generate_form_add_products">Teruskan</button>
-      </div>
-    </form>
-  </div>
-</div>
-<!-- end modal  -->
