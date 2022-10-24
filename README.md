@@ -69,21 +69,21 @@ anda boleh buka melalui Browser,
 **Database** dan **Table** akan dibuat secara auto selepas anda jalankan project ini di browser
 
 ## Preview Public 
-![App Screenshot](img/screenshoot/public.png)  
+![App Screenshot](asset/img/screenshoot/public.png)  
 
 ## Preview Owner
 Halaman Owner sedikit berbeza dengan adanya beberapa button tambahan untuk kegunaan owner
 #### Owner Password - Memerlukan password untuk ke halaman owner
-![App Screenshot](img/screenshoot/alert-password.png)  
-![App Screenshot](img/screenshoot/owner.png)  
+![App Screenshot](asset/img/screenshoot/alert-password.png)  
+![App Screenshot](asset/img/screenshoot/owner.png)  
 
 #### Owner Tambah Barang
-![App Screenshot](img/screenshoot/tambah-data.png)  
+![App Screenshot](asset/img/screenshoot/tambah-data.png)  
 
-![App Screenshot](img/screenshoot/tambah-multiple.png)  
+![App Screenshot](asset/img/screenshoot/tambah-multiple.png)  
 
 #### Owner Edit Barang
-![App Screenshot](img/screenshoot/edit-multiple.png) 
+![App Screenshot](asset/img/screenshoot/edit-multiple.png) 
 
 
 
