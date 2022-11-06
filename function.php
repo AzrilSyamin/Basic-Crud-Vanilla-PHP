@@ -61,12 +61,14 @@ function cash()
         $message = "Maaf $product_name $quantity";
         break;
       default:
-        $quantity = "adalah $quantity";
+        $quantity = "hanya $quantity unit!";
         $message = "Jumlah barang yang anda inginkan tidak mencukupi, stock $product_name $quantity";
     }
 
     echo "<script>alert('$message')</script>";
     return false;
+  } elseif ($buyQuantity <= 0) {
+    echo "<script>alert('sila masukkan kuantiti yang benar!')</script>";
   } else {
     $quantity = $result["product_quantity"] - $buyQuantity;
   }
