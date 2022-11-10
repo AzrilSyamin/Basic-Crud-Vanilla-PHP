@@ -61,29 +61,15 @@ if (isset($_POST["cash"])) {
 
 
 <?php include_once("footer.php"); ?>
-
-<!-- Modal -->
-<div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <form action="" method="POST" class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Barang</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="col-12">
-          <div class="mb-3">
-            <label for="total_comfirm" class="form-label">Jumlah Barang</label>
-            <input type="number" class="form-control" id="total_comfirm" name="total_comfirm" placeholder="10" required>
-            <div id="total_comfirm" class="form-text">*Masukkan jumlah barang yang ingin anda tambah</div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <button type="submit" class="btn btn-primary" name="generate_form_add_products">Teruskan</button>
-      </div>
-    </form>
-  </div>
-</div>
-<!-- end modal  -->
+<script>
+  // hide checkbox and clear session  
+  if (window.location.href == fileUrl || window.location.href == fileUrl + "index.php") {
+    sessionStorage.clear()
+    document.querySelector("thead tr th:last-child").remove()
+    let mat = document.querySelectorAll("tbody tr td:last-child")
+    for (i = 0; i < mat.length; i++) {
+      mat[i].remove()
+    }
+  }
+  // end hide clear session 
+</script>

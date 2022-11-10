@@ -3,41 +3,13 @@
 
 </footer>
 <script src="asset/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous">
-</script>
 <script>
-  $("#select_all").click(function() {
-    if (this.checked) {
-      $(".check").each(function() {
-        this.checked = true
-      })
-    } else {
-      $(".check").each(function() {
-        this.checked = false
-      })
-    }
-  })
-
-  $(".check").click(function() {
-    if ($(".check:checked").length == $(".check").length) {
-      $("#select_all").prop("checked", true)
-    } else {
-      $("#select_all").prop("checked", false)
-    }
-  })
-
   let mylink = window.location.pathname
   let path = mylink.split("/")
   const fileUrl = window.location.protocol + "//" + window.location.host + "/" + path[1] + "/"
 
-  if (window.location.href == fileUrl + "index.php") {
-    document.querySelector("thead tr th:last-child").classList.add("visually-hidden")
-    let mat = document.querySelectorAll("tbody tr td:last-child")
-    for (i = 0; i < mat.length; i++) {
-      mat[i].classList.add("visually-hidden")
-    }
-  }
 
+  // menu active 
   let title = document.querySelectorAll(".nav-link")
   let mytitle = path[2].split(".")
   if (mytitle[0] == "index" || mytitle[0] == "") {
@@ -51,6 +23,34 @@
       }
     }
   }
+  // end menu active 
+
+  // checbox
+  let checkAll = document.querySelector("#select_all")
+  let checks = document.querySelectorAll(".check")
+
+  checkAll.onclick = function() {
+    if (checkAll.checked == true) {
+      checks.forEach(element => {
+        element.checked = true
+      })
+    } else {
+      checks.forEach(element => {
+        element.checked = false
+      })
+    }
+  }
+
+  for (let i = 0; i < checks.length; i++) {
+    checks[i].onclick = function() {
+      let result = 0
+      for (let i = 0; i < checks.length; i++) {
+        if (checks[i].checked) result++
+      }
+      checkAll.checked = result === checks.length
+    }
+  }
+  // end checbox
 </script>
 </body>
 

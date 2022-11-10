@@ -10,15 +10,15 @@ if (isset($_POST["header_search_button"])) {
   }
 } elseif (isset($_POST["cash"])) {
   if (cash() > 0) {
-    echo "<script>window.location.href='owner.php?cash'</script>";
+    echo "<script>window.location.href='owner.php'</script>";
   }
 } else if (isset($_POST["add_products"])) {
   if (add_products() > 0) {
-    echo "<script>window.location.href='owner.php?add'</script>";
+    echo "<script>window.location.href='owner.php'</script>";
   }
 } else if (isset($_POST["edit_products"])) {
   if (edit_products() > 0) {
-    echo "<script>window.location.href='owner.php?edit'</script>";
+    echo "<script>window.location.href='owner.php'</script>";
   }
 } else if (isset($_POST["del"])) {
   if (!isset($_POST["checked"])) {
@@ -27,9 +27,8 @@ if (isset($_POST["header_search_button"])) {
     </script>";
     return false;
   }
-  echo "<script>alert('Padam? Anda pasti?')</script>";
   if (delete_products() > 0) {
-    echo "<script>window.location.href='owner.php?del'</script>";
+    echo "<script>window.location.href='owner.php'</script>";
   }
 }
 
@@ -155,7 +154,7 @@ if (isset($_POST["header_search_button"])) {
         <?php include_once("table.php") ?>
         <div class=" d-flex justify-content-end  pt-3">
           <button type="submit" class="btn btn-warning" name="edit">Edit</button>
-          <button type="submit" class="btn btn-danger ms-2" name="del">Padam</button>
+          <button type="submit" class="btn btn-danger ms-2" name="del" onclick="return confirm('Padam? Anda pasti?')">Padam</button>
         </div>
       </form>
     </div>
@@ -201,15 +200,35 @@ if (isset($_POST["header_search_button"])) {
     }
   }
 
+  // simple alert
   if (window.location.href == fileUrl + owner) {
-    alert("Opps... Anda Owner? Halaman ini hanya boleh dibuka oleh Owner")
-    let pass = prompt("Halaman ini memerlukan password! Sila masukkan password anda dibawah!")
-    if (pass !== "Owner") {
-      alert("Maaf anda tidak dibenarkan disini")
-      window.location.href = "index.php"
+    let owner = sessionStorage.getItem("name")
+
+    if (!owner) {
+      // if not isset owner
+      let question = confirm("Opps... Anda Owner? Halaman ini hanya boleh dibuka oleh Owner")
+
+      if (question !== true) {
+        // if question == false 
+        window.location.href = fileUrl
+      } else {
+        // if question == true
+        let pass = prompt("Halaman ini memerlukan password! Sila masukkan password anda dibawah!")
+
+        if (pass !== "Owner") {
+          alert("Maaf anda tidak dibenarkan disini")
+          window.location.href = fileUrl
+        } else {
+          sessionStorage.setItem("name", "owner")
+          window.location.href
+        }
+      }
+
     } else {
-      const param = "?admin"
-      window.location.href = param
+      // if isset owner 
+      window.location.href
     }
+
   }
+  // end simple alert 
 </script>

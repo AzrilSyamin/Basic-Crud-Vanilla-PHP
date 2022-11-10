@@ -92,6 +92,10 @@ function add_products()
   for ($products = 1; $products <= $total; $products++) {
     $product_name = htmlspecialchars($_POST["product_name_" . $products]);
     $product_price = htmlspecialchars($_POST["product_price_" . $products]);
+    if (!is_numeric($product_price)) {
+      echo "<script>alert('sila masukkan angka saja dibahagian harga')</script>";
+      return false;
+    }
 
     mysqli_query($conn, "INSERT INTO products (product_name,product_price) VALUE ('$product_name','$product_price')") or die(mysqli_error($conn));
   }
